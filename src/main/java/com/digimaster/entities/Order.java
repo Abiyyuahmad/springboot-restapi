@@ -3,10 +3,12 @@ package com.digimaster.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import org.springframework.hateoas.ResourceSupport;
+
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order extends ResourceSupport {
 	
 	@Id
 	@GeneratedValue

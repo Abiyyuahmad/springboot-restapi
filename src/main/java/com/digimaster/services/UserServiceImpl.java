@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        user.setId(id);
+        user.setUserid(id);
         return userRepository.save(user);
 
     }

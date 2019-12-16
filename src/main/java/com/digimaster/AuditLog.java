@@ -1,10 +1,9 @@
 package com.digimaster;
 
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -16,22 +15,25 @@ public class AuditLog {
 
     private Logger logger = LoggerFactory.getLogger(AuditLog.class);
 
-    // Pointcut definition to display all the available methods i.e. the advice will be called for all the methods.
-    @Pointcut(value= "execution(* com.digimaster.services.UserServiceImpl.*(..))")
-    private void logDisplaying() {
+    //What kind of method calls I would intercept
+    //execution(* PACKAGE.*.*(..))
+    //Weaving & Weaver
+    @Before("execution(* com.digimaster.services.UserServiceImpl.*(..))")
+    public void before(JoinPoint joinPoint){
+        //Advice
+        logger.info(" Check for user access ");
+        logger.info(" Allowed execution for {}", joinPoint);
     }
 
-    // @Around annotation declares the around advice which is applied before and after the method matching with a pointcut expression.
-    @Around(value= "logDisplaying()")
-    public void aroundAdvice(ProceedingJoinPoint pjp) throws Throwable {
-        logger.info("Inside aroundAdvice() method...." + " Inserted before= " + pjp.getSignature().getName() + " method");
-
-        try {
-            pjp.proceed();
-        } finally {
-            // Do something useful.
-        }
-
-        logger.info("Inside aroundAdvice() method...." + " Inserted after= " + pjp.getSignature().getName() + " method");
+    @AfterReturning(value = "execution(* com.digimaster.services.UserServiceImpl.*(..))",
+            returning = "result")
+    public void afterReturning(JoinPoint joinPoint, Object result) {
+        logger.info("{} returned with value {}", joinPoint, result);
     }
+
+    @After(value = "execution(* com.digimaster.services.UserServiceImpl.*(..))")
+    public void after(JoinPoint joinPoint) {
+        logger.info("after execution of {}", joinPoint);
+    }
+
 }

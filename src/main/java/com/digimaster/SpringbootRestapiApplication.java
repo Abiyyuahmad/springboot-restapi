@@ -33,10 +33,10 @@ public class SpringbootRestapiApplication {
 	void createUser(UserRepository r){
 
 		for (int i = 1; i < 10; i++) {
-			String plainPass = "password";
+			String plainPass = "abc";
 			String password = encoder.encode(plainPass.subSequence(0, plainPass.length()));
 
-			User user=new User("user"+i, "Digi"+i, "Master"+i, "something@gmail.com"+i, "USER", "SSN00"+i, "New York", new ArrayList<>(),password);
+			User user=new User("springboot"+i, "Digi"+i, "Master"+i, "something@gmail.com"+i, "USER", "SSN00"+i, "New York", new ArrayList<>(),password);
 			List<Order> orders = new ArrayList<>();
 			orders.add(new Order("Order001 - "+user.getFirstname(),user));
 			orders.add(new Order("Order002 - "+user.getFirstname(),user));
